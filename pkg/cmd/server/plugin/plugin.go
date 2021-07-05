@@ -43,12 +43,12 @@ func NewCommand(f client.Factory) *cobra.Command {
 				RegisterBackupItemAction("velero.io/crd-remap-version", newRemapCRDVersionAction(f)).
 				RegisterRestoreItemAction("velero.io/job", newJobRestoreItemAction).
 				RegisterRestoreItemAction("velero.io/pod", newPodRestoreItemAction).
-				RegisterRestoreItemAction("velero.io/restic", newResticRestoreItemAction(f)).
+				//RegisterRestoreItemAction("velero.io/restic", newResticRestoreItemAction(f)).
 				RegisterRestoreItemAction("velero.io/init-restore-hook", newInitRestoreHookPodAction).
 				RegisterRestoreItemAction("velero.io/service", newServiceRestoreItemAction).
 				RegisterRestoreItemAction("velero.io/service-account", newServiceAccountRestoreItemAction).
-				RegisterRestoreItemAction("velero.io/add-pvc-from-pod", newAddPVCFromPodRestoreItemAction).
-				RegisterRestoreItemAction("velero.io/add-pv-from-pvc", newAddPVFromPVCRestoreItemAction).
+				//RegisterRestoreItemAction("velero.io/add-pvc-from-pod", newAddPVCFromPodRestoreItemAction).
+				//RegisterRestoreItemAction("velero.io/add-pv-from-pvc", newAddPVFromPVCRestoreItemAction).
 				RegisterRestoreItemAction("velero.io/change-storage-class", newChangeStorageClassRestoreItemAction(f)).
 				RegisterRestoreItemAction("velero.io/role-bindings", newRoleBindingItemAction).
 				RegisterRestoreItemAction("velero.io/cluster-role-bindings", newClusterRoleBindingItemAction).
