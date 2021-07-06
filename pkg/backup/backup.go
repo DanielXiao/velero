@@ -35,7 +35,6 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"k8s.io/apimachinery/pkg/types"
 	kubeerrs "k8s.io/apimachinery/pkg/util/errors"
 
 	"github.com/vmware-tanzu/velero/internal/hook"
@@ -278,10 +277,10 @@ func (kb *kubernetesBackupper) Backup(log logrus.FieldLogger, backupRequest *Req
 	log.WithField("progress", "").Infof("Collected %d items matching the backup spec from the Kubernetes API (actual number of items backed up may be more or less depending on velero.io/exclude-from-backup annotation, plugins returning additional related items to back up, etc.)", len(items))
 
 	backupRequest.Status.Progress = &velerov1api.BackupProgress{TotalItems: len(items)}
-	patch := fmt.Sprintf(`{"status":{"progress":{"totalItems":%d}}}`, len(items))
-	if _, err := kb.backupClient.Backups(backupRequest.Namespace).Patch(context.TODO(), backupRequest.Name, types.MergePatchType, []byte(patch), metav1.PatchOptions{}); err != nil {
-		log.WithError(errors.WithStack((err))).Warn("Got error trying to update backup's status.progress.totalItems")
-	}
+	//patch := fmt.Sprintf(`{"status":{"progress":{"totalItems":%d}}}`, len(items))
+	//if _, err := kb.backupClient.Backups(backupRequest.Namespace).Patch(context.TODO(), backupRequest.Name, types.MergePatchType, []byte(patch), metav1.PatchOptions{}); err != nil {
+	//	log.WithError(errors.WithStack((err))).Warn("Got error trying to update backup's status.progress.totalItems")
+	//}
 
 	itemBackupper := &itemBackupper{
 		backupRequest:           backupRequest,
@@ -332,10 +331,10 @@ func (kb *kubernetesBackupper) Backup(log logrus.FieldLogger, backupRequest *Req
 					backupRequest.Status.Progress.TotalItems = lastUpdate.totalItems
 					backupRequest.Status.Progress.ItemsBackedUp = lastUpdate.itemsBackedUp
 
-					patch := fmt.Sprintf(`{"status":{"progress":{"totalItems":%d,"itemsBackedUp":%d}}}`, lastUpdate.totalItems, lastUpdate.itemsBackedUp)
-					if _, err := kb.backupClient.Backups(backupRequest.Namespace).Patch(context.TODO(), backupRequest.Name, types.MergePatchType, []byte(patch), metav1.PatchOptions{}); err != nil {
-						log.WithError(errors.WithStack((err))).Warn("Got error trying to update backup's status.progress")
-					}
+					//patch := fmt.Sprintf(`{"status":{"progress":{"totalItems":%d,"itemsBackedUp":%d}}}`, lastUpdate.totalItems, lastUpdate.itemsBackedUp)
+					//if _, err := kb.backupClient.Backups(backupRequest.Namespace).Patch(context.TODO(), backupRequest.Name, types.MergePatchType, []byte(patch), metav1.PatchOptions{}); err != nil {
+					//	log.WithError(errors.WithStack((err))).Warn("Got error trying to update backup's status.progress")
+					//}
 					lastUpdate = nil
 				}
 			}
@@ -411,10 +410,10 @@ func (kb *kubernetesBackupper) Backup(log logrus.FieldLogger, backupRequest *Req
 	backupRequest.Status.Progress.TotalItems = len(backupRequest.BackedUpItems)
 	backupRequest.Status.Progress.ItemsBackedUp = len(backupRequest.BackedUpItems)
 
-	patch = fmt.Sprintf(`{"status":{"progress":{"totalItems":%d,"itemsBackedUp":%d}}}`, len(backupRequest.BackedUpItems), len(backupRequest.BackedUpItems))
-	if _, err := kb.backupClient.Backups(backupRequest.Namespace).Patch(context.TODO(), backupRequest.Name, types.MergePatchType, []byte(patch), metav1.PatchOptions{}); err != nil {
-		log.WithError(errors.WithStack((err))).Warn("Got error trying to update backup's status.progress")
-	}
+	//patch = fmt.Sprintf(`{"status":{"progress":{"totalItems":%d,"itemsBackedUp":%d}}}`, len(backupRequest.BackedUpItems), len(backupRequest.BackedUpItems))
+	//if _, err := kb.backupClient.Backups(backupRequest.Namespace).Patch(context.TODO(), backupRequest.Name, types.MergePatchType, []byte(patch), metav1.PatchOptions{}); err != nil {
+	//	log.WithError(errors.WithStack((err))).Warn("Got error trying to update backup's status.progress")
+	//}
 
 	log.WithField("progress", "").Infof("Backed up a total of %d items", len(backupRequest.BackedUpItems))
 

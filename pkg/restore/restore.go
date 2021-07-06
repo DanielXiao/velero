@@ -39,7 +39,6 @@ import (
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"k8s.io/apimachinery/pkg/types"
 	kubeerrs "k8s.io/apimachinery/pkg/util/errors"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
@@ -429,22 +428,22 @@ func (ctx *restoreContext) execute() (Result, Result) {
 				lastUpdate = &val
 			case <-ticker.C:
 				if lastUpdate != nil {
-					patch := fmt.Sprintf(
-						`{"status":{"progress":{"totalItems":%d,"itemsRestored":%d}}}`,
-						lastUpdate.totalItems,
-						lastUpdate.itemsRestored,
-					)
-					_, err := ctx.restoreClient.Restores(ctx.restore.Namespace).Patch(
-						go_context.TODO(),
-						ctx.restore.Name,
-						types.MergePatchType,
-						[]byte(patch),
-						metav1.PatchOptions{},
-					)
-					if err != nil {
-						ctx.log.WithError(errors.WithStack((err))).
-							Warn("Got error trying to update restore's status.progress")
-					}
+					//patch := fmt.Sprintf(
+					//	`{"status":{"progress":{"totalItems":%d,"itemsRestored":%d}}}`,
+					//	lastUpdate.totalItems,
+					//	lastUpdate.itemsRestored,
+					//)
+					//_, err := ctx.restoreClient.Restores(ctx.restore.Namespace).Patch(
+					//	go_context.TODO(),
+					//	ctx.restore.Name,
+					//	types.MergePatchType,
+					//	[]byte(patch),
+					//	metav1.PatchOptions{},
+					//)
+					//if err != nil {
+					//	ctx.log.WithError(errors.WithStack((err))).
+					//		Warn("Got error trying to update restore's status.progress")
+					//}
 					lastUpdate = nil
 				}
 			}
@@ -506,22 +505,22 @@ func (ctx *restoreContext) execute() (Result, Result) {
 
 	// Do a final progress update as stopping the ticker might have left last few
 	// updates from taking place.
-	patch := fmt.Sprintf(
-		`{"status":{"progress":{"totalItems":%d,"itemsRestored":%d}}}`,
-		len(ctx.restoredItems),
-		len(ctx.restoredItems),
-	)
-
-	_, err = ctx.restoreClient.Restores(ctx.restore.Namespace).Patch(
-		go_context.TODO(),
-		ctx.restore.Name,
-		types.MergePatchType,
-		[]byte(patch),
-		metav1.PatchOptions{},
-	)
-	if err != nil {
-		ctx.log.WithError(errors.WithStack((err))).Warn("Updating restore status.progress")
-	}
+	//patch := fmt.Sprintf(
+	//	`{"status":{"progress":{"totalItems":%d,"itemsRestored":%d}}}`,
+	//	len(ctx.restoredItems),
+	//	len(ctx.restoredItems),
+	//)
+	//
+	//_, err = ctx.restoreClient.Restores(ctx.restore.Namespace).Patch(
+	//	go_context.TODO(),
+	//	ctx.restore.Name,
+	//	types.MergePatchType,
+	//	[]byte(patch),
+	//	metav1.PatchOptions{},
+	//)
+	//if err != nil {
+	//	ctx.log.WithError(errors.WithStack((err))).Warn("Updating restore status.progress")
+	//}
 
 	// Wait for all of the restic restore goroutines to be done, which is
 	// only possible once all of their errors have been received by the loop
